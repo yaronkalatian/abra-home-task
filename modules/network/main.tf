@@ -8,6 +8,10 @@ resource "aws_internet_gateway" "abra" {
   vpc_id = aws_vpc.abra.id
 }
 
+data "aws_availability_zones" "available" {
+  
+}
+
 resource "aws_subnet" "public" {
   count                   = 2
   vpc_id                  = aws_vpc.abra.id
