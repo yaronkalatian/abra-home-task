@@ -53,7 +53,7 @@ resource "aws_route_table" "private" {
 resource "aws_route" "private_internet" {
   route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.this[0].id   # adjust for multi-AZ if needed
+  nat_gateway_id         = aws_nat_gateway.abra[0].id   # adjust for multi-AZ if needed
 }
 
 resource "aws_route_table_association" "private" {
