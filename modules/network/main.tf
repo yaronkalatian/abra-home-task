@@ -46,7 +46,7 @@ resource "aws_nat_gateway" "abra" {
 }
 
 resource "aws_route_table" "private" {
-  vpc_id = var.vpc_id
+  vpc_id  = aws_vpc.abra.id
   tags   = { Name = "private-rt" }
 }
 
@@ -57,7 +57,7 @@ resource "aws_route" "private_internet" {
 }
 
 resource "aws_route_table_association" "private" {
-  count          = length(var.private_subnets)
-  subnet_id      = var.private_subnets[count.index]
+  count          = length(aws_subnet.private)
+  subnet_id      = aws_subnet.private[count.index]
   route_table_id = aws_route_table.private.id
 }

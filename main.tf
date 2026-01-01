@@ -1,6 +1,6 @@
 module "network" {
   source    = "./modules/network"
-  app_name        = var.app_name
+  app_name = var.app_name
   vpc_cidr = var.vpc_cidr
 }
 
