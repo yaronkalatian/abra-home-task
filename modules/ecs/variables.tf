@@ -29,7 +29,3 @@ variable "desired_count" {
   type        = number
   default     = 2
 }
-
-variable "alb_listener_arn" {
-  type = string
-}
