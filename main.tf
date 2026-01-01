@@ -27,4 +27,5 @@ module "ecs" {
   private_subnets       = module.network.private_subnets
   alb_security_group_id = module.alb.alb_security_group_id
   target_group_arn      = module.alb.target_group_arn
+  alb_listener_arn      = module.alb.listener_arn
 }
