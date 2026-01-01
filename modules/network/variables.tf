@@ -14,3 +14,8 @@ variable "private_subnet_count" {
   type        = number
   default     = 2
 }
+
+variable "app_name" {
+  description = "Application name used for resource naming"
+  type        = string
+}

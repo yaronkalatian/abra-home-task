@@ -9,7 +9,7 @@ resource "aws_internet_gateway" "abra" {
 }
 
 data "aws_availability_zones" "available" {
-  
+
 }
 
 resource "aws_subnet" "public" {
@@ -27,7 +27,20 @@ resource "aws_subnet" "private" {
   availability_zone = data.aws_availability_zones.available.names[count.index]
 }
 
+
+resource "aws_eip" "nat" {
+  count = var.public_subnet_count
+  tags = {
+    Name = "${var.app_name}-nat-eip-${count.index}"
+  }
+}
+
 resource "aws_nat_gateway" "abra" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public[0].id
+  count         = var.public_subnet_count
+  allocation_id = aws_eip.nat[count.index].id
+  subnet_id     = aws_subnet.public[count.index].id
+
+    tags = {
+    Name = "${var.app_name}-nat-${count.index}"
+  }
 }
