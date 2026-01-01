@@ -13,3 +13,7 @@ output "listener_arn" {
 output "target_group_arn" {
   value = aws_lb_target_group.abra.arn
 }
+
+output "alb_dns_name" {
+  value = aws_lb.abra.dns_name
+}

@@ -17,3 +17,7 @@ variable "vpc_id" {
   description = "VPC ID for security group association"
   type        = string
 }
+
+variable "alb_dns_name" {
+  type = string
+}
