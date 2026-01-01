@@ -27,7 +27,7 @@ resource "aws_lb" "abra" {
   security_groups    = [aws_security_group.alb.id]
 }
 
-resource "aws_lb_target_group" "this" {
+resource "aws_lb_target_group" "abra" {
   name     = "${var.app_name}-tg"
   port     = 80
   protocol = "HTTP"
@@ -42,6 +42,8 @@ resource "aws_lb_listener" "http" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.this.arn
+    target_group_arn = aws_lb_target_group.abra.arn
   }
+
+  depends_on = [aws_lb_target_group.abra] 
 }

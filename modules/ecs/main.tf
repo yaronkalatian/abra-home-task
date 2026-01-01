@@ -37,4 +37,6 @@ resource "aws_ecs_service" "abra" {
     container_name   = "hello"
     container_port   = 80
   }
+
+  depends_on = [aws_lb_listener.http]
 }
