@@ -10,7 +10,6 @@ module "api_gateway" {
   vpc_id          = module.network.vpc_id
   private_subnets = module.network.private_subnets
   alb_listener_arn = module.alb.listener_arn
-  alb_dns_name =  module.alb.alb_dns_name
 }
 
 module "alb" {
