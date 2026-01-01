@@ -13,7 +13,7 @@ resource "aws_security_group" "alb" {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    security_groups = [var.vpc_link_sg]
+    security_groups = [var.vpc_link_sg_id]
   }
 
   egress {

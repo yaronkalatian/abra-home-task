@@ -21,6 +21,7 @@ resource "aws_ecs_task_definition" "abra" {
 }
 
 resource "aws_ecs_service" "abra" {
+  name            = "abraecs"
   cluster         = aws_ecs_cluster.abra.id
   task_definition = aws_ecs_task_definition.abra.arn
   desired_count   = 2
