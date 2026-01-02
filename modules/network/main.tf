@@ -34,18 +34,19 @@ resource "aws_subnet" "private" {
 
 
 resource "aws_eip" "nat" {
-  count = var.public_subnet_count
+  count = length(local.azs)
+
   tags = {
     Name = "${var.app_name}-nat-eip-${count.index}"
   }
 }
 
 resource "aws_nat_gateway" "abra" {
-  count         = var.public_subnet_count
+  count         = length(local.azs)
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
 
-    tags = {
+  tags = {
     Name = "${var.app_name}-nat-${count.index}"
   }
 }
@@ -56,7 +57,7 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "private_internet" {
-  count = length(aws_route_table.private)
+  count = length(local.azs)
 
   route_table_id         = aws_route_table.private[count.index].id
   destination_cidr_block = "0.0.0.0/0"
@@ -67,4 +68,20 @@ resource "aws_route_table_association" "private" {
   count          = length(aws_subnet.private)
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private[count.index].id
+}
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.abra.id
+}
+
+resource "aws_route" "public_internet" {
+  route_table_id         = aws_route_table.public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.abra.id
+}
+
+resource "aws_route_table_association" "public" {
+  count          = length(aws_subnet.public)
+  subnet_id      = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.public.id
 }
