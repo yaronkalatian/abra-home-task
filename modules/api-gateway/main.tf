@@ -17,3 +17,15 @@ resource "aws_apigatewayv2_integration" "alb" {
   connection_id      = aws_apigatewayv2_vpc_link.abra.id
   integration_method = "ANY"
 }
+
+resource "aws_apigatewayv2_stage" "default" {
+  api_id      = aws_apigatewayv2_api.abra.id
+  name        = "$default"
+  auto_deploy = true
+}
+
+resource "aws_apigatewayv2_route" "any" {
+  api_id    = aws_apigatewayv2_api.abra.id
+  route_key = "ANY /{proxy+}"
+  target    = "integrations/${aws_apigatewayv2_integration.alb.id}"
+}
