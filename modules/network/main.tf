@@ -12,19 +12,24 @@ data "aws_availability_zones" "available" {
 
 }
 
+locals {
+  azs = slice(data.aws_availability_zones.available.names, 0, 2)
+}
+
 resource "aws_subnet" "public" {
-  count                   = 2
-  vpc_id                  = aws_vpc.abra.id
-  cidr_block              = cidrsubnet(var.vpc_cidr, 4, count.index)
-  availability_zone       = data.aws_availability_zones.available.names[count.index]
+  count             = length(local.azs)
+  vpc_id            = aws_vpc.abra.id
+  cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index)
+  availability_zone = local.azs[count.index]
+
   map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "private" {
-  count             = 2
+  count             = length(local.azs)
   vpc_id            = aws_vpc.abra.id
-  cidr_block        = cidrsubnet(var.vpc_cidr, 4, count.index + 2)
-  availability_zone = data.aws_availability_zones.available.names[count.index]
+  cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index + 10)
+  availability_zone = local.azs[count.index]
 }
 
 
@@ -46,8 +51,8 @@ resource "aws_nat_gateway" "abra" {
 }
 
 resource "aws_route_table" "private" {
-  vpc_id  = aws_vpc.abra.id
-  tags   = { Name = "private-rt" }
+  count  = length(local.azs)
+  vpc_id = aws_vpc.abra.id
 }
 
 resource "aws_route" "private_internet" {
@@ -61,5 +66,5 @@ resource "aws_route" "private_internet" {
 resource "aws_route_table_association" "private" {
   count          = length(aws_subnet.private)
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private.id
+  route_table_id = aws_route_table.private[count.index].id
 }
