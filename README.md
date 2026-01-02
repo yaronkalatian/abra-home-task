@@ -72,6 +72,14 @@
     terraform destroy
 
 
+# final results
+<img width="1194" height="566" alt="image" src="https://github.com/user-attachments/assets/62cc156b-0032-48b2-bce7-c9af3bd69809" />
+
+
+
+
+
+
 # Design Choices
 	•	Internal ALB ensures zero public exposure of ECS
 	•	API Gateway provides managed entry point + throttling
