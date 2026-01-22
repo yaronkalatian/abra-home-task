@@ -115,18 +115,12 @@
 	Security hardening
 	•	Add TLS (HTTPS) on API Gateway (and optionally ALB) with ACM certificates.
 	•	Use AWS WAF on API Gateway for common protections (rate limiting, OWASP rules).
-	•	Replace NAT dependency with VPC endpoints (ECR API/DKR, CloudWatch Logs, SSM) to 
-        reduce attack surface and cost.
 
 	Resiliency
 	•	Keep everything multi-AZ and consider cross-zone load balancing.
 	•	For higher availability, expand to 3 AZs and run more tasks.
 	•	Use deployment strategies (rolling/blue-green via CodeDeploy) for safer releases.
 
-	Networking & cost optimization
-	•	Use VPC endpoints to reduce NAT Gateway traffic and costs.
-	•	Consider a single NAT per AZ (current) vs. single NAT overall (cheaper but less resilient),
-        depending on requirements.
 
 	CI/CD & governance
 	•	Add a pipeline (GitHub Actions) to run terraform fmt, validate, tflint, and plan.
